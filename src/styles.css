@@ -1,0 +1,128 @@
+:root {
+  --bg: #04050a;
+  --ink: #eaf4ff;
+  --ink-dim: #8fa3bb;
+  --accent: #8fe3ff;
+  --line: rgba(143, 227, 255, 0.18);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scene {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* soft radial falloff so the dark edges feel like a room, not a void */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 30%, rgba(4, 5, 10, 0.55) 78%, rgba(4, 5, 10, 0.92) 100%);
+}
+
+/* MediaPipe needs a real <video> to read frames from, but it must not be seen. */
+.hidden-video {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --------------------------- camera prompt -------------------------- */
+
+/* The only UI: shown just when the camera needs the user's permission or the
+   stream failed. Everything else stays out of the way of the particles. */
+.camera-note {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 5vh, 56px);
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.camera-note__btn {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(10, 16, 26, 0.72);
+  backdrop-filter: blur(10px);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.camera-note__btn:hover {
+  border-color: rgba(143, 227, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+/* ------------------------------ boot ------------------------------- */
+
+.boot {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  background: rgba(4, 5, 10, 0.82);
+  transition: opacity 0.5s;
+}
+
+.boot__ring {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(143, 227, 255, 0.18);
+  border-top-color: var(--accent);
+  animation: spin 1s linear infinite;
+}
+
+.boot__text {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
